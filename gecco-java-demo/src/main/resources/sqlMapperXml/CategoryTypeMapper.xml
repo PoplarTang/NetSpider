@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.road.crawler.meizitu.mapper.CategoryTypeMapper" >
+
+  <resultMap id="BaseResultMap" type="com.road.crawler.meizitu.model.CategoryType" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Tag" property="tag" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    Id, Tag,url
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_mz_tag
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_mz_tag
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.road.crawler.meizitu.model.CategoryType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_mz_tag (Tag,url)
+    values (#{tag,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.road.crawler.meizitu.model.CategoryType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_mz_tag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tag != null" >
+        Tag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tag != null" >
+        #{tag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.road.crawler.meizitu.model.CategoryType" >
+    update t_mz_tag
+    <set >
+      <if test="tag != null" >
+        Tag = #{tag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.road.crawler.meizitu.model.CategoryType" >
+    update t_mz_tag
+    set Tag = #{tag,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findAll"  resultMap="BaseResultMap">
+  	select * from t_mz_tag
+  </select>
+</mapper>
